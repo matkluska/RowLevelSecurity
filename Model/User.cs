@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RowLevelSecurity.Models
+namespace RowLevelSecurity.Model
 {
     public class User
     {

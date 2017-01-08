@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using EntityFramework.DynamicFilters;
-using RowLevelSecurity.Models;
+using RowLevelSecurity.Model;
 
 namespace RowLevelSecurity.Context
 {
@@ -24,11 +24,12 @@ namespace RowLevelSecurity.Context
             this.InitializeDynamicFilters();
         }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        protected sealed override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Filter("SecuredByRole",
                 (SecuredEntity securedEntity, IEnumerable<Guid> userRows) => userRows.Contains(securedEntity.RowId),
-                () => new List<Guid>());
+                (RowSecurityContext context) => context.GetUserRowIds(_userName));
+            modelBuilder.EnableFilter("IfNotAdmin", (RowSecurityContext context) => !context.IsAdmin());
 
             base.OnModelCreating(modelBuilder);
         }
@@ -36,9 +37,6 @@ namespace RowLevelSecurity.Context
         public void SetUsername(string username)
         {
             _userName = username;
-            var userRowIds = GetUserRowIds(username);
-            this.SetFilterScopedParameterValue("SecuredByRole", "userRows", userRowIds);
-            this.SetFilterGlobalParameterValue("SecuredByRole", "userRows", userRowIds);
         }
 
         public string GetUsername()
@@ -65,14 +63,26 @@ namespace RowLevelSecurity.Context
             return RowRoles.Where(r => roles.Contains(r.RoleId)).Select(r => r.RowId);
         }
 
-        public void AddRoleToRow(Guid rowId, string roleId)
+        public bool IsAdmin()
         {
-            RowRoles.Add(new RowRoles {RoleId = roleId, RowId = rowId});
+            return GetUserRoles(_userName).Contains("Admin");
         }
 
-        public void AddRoleToUser(string userName, string roleId)
+        public void AddRoleToRow(Guid rowId, string roleId)
         {
-            var user = Users.First(u => u.UserName == userName);
+            if (GetUserRoles(_userName).Contains(roleId))
+            {
+                RowRoles.Add(new RowRoles {RoleId = roleId, RowId = rowId});
+            }
+        }
+
+        public void AddRoleToUser(string userNameToRole, string roleId)
+        {
+            var user = Users.FirstOrDefault(u => u.UserName == userNameToRole);
+            if (user == null)
+            {
+                return;
+            }
             var role = new Role {RoleId = roleId};
 
             Roles.Attach(role);

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace RowLevelSecurity.Models
+namespace RowLevelSecurity.Model
 {
     public class Role
     {

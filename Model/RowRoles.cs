@@ -2,15 +2,16 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RowLevelSecurity.Models
+namespace RowLevelSecurity.Model
 {
-    public abstract class SecuredEntity
+    public class RowRoles
     {
-        protected SecuredEntity()
-        {
-            this.RowId = Guid.NewGuid();
-        }
-
+        [Required]
+        [Key]
         public Guid RowId { get; set; }
+
+        [Required]
+        public string RoleId { get; set; }
+
     }
 }

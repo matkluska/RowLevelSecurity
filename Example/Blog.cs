@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using RowLevelSecurity.Models;
+using RowLevelSecurity.Model;
 
 namespace RowLevelSecurity.Example
 {
