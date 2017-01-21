@@ -6,7 +6,7 @@ using RowLevelSecurity.Context;
 namespace RowLevelSecurity.Aspect
 {
     [Serializable]
-    public class AuthorizeAspect : OnMethodBoundaryAspect
+    public class Authorize : OnMethodBoundaryAspect
     {
         public string Username { get; set; }
 
@@ -22,7 +22,7 @@ namespace RowLevelSecurity.Aspect
             if (userName == null || context == null)
                 throw new ArgumentException("Argument usrename and context are required");
 
-            context.SetUsername(userName);
+            context.Authorize(userName);
         }
     }
 }

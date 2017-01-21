@@ -14,14 +14,12 @@ namespace RowLevelSecurity.Model
         public int UserId { get; set; }
 
         [Required]
-        [Column("Name")]
         [MinLength(3)]
         [MaxLength(20)]
         [Index(IsUnique = true)]
-        public string UserName { get; set; }
+        public string Login { get; set; }
 
         public virtual ICollection<Role> Roles { get; set; }
-
 
     }
 }

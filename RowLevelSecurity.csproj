@@ -61,14 +61,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Aspect\AuthorizeAspect.cs" />
-    <Compile Include="Example\Blog.cs" />
-    <Compile Include="Example\InitializeBlogData.cs" />
+    <Compile Include="Aspect\Authorize.cs" />
+    <Compile Include="Company\Company.cs" />
+    <Compile Include="Company\CompanyContext.cs" />
+    <Compile Include="Company\Earnings.cs" />
+    <Compile Include="Company\Employee.cs" />
+    <Compile Include="Company\InitializeData.cs" />
     <Compile Include="Model\Role.cs" />
     <Compile Include="Model\RowRoles.cs" />
     <Compile Include="Model\SecuredEntity.cs" />
     <Compile Include="Model\User.cs" />
-    <Compile Include="Example\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Context\RowSecurityContext.cs" />
   </ItemGroup>
