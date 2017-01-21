@@ -1,5 +1,5 @@
-﻿using System.Data.Entity;
-using RowLevelSecurity.Models;
+﻿using RowLevelSecurity.Models;
+using System.Data.Entity;
 
 namespace RowLevelSecurity.Example
 {
@@ -14,7 +14,7 @@ namespace RowLevelSecurity.Example
             var role3 = new Role {RoleId = "NormalUser", ParentId = role2.RoleId};
 
             user1.Roles.Add(role1);
-            user1.Roles.Add(role2);
+            //user1.Roles.Add(role2);
             user2.Roles.Add(role2);
             context.Roles.Add(role3);
 

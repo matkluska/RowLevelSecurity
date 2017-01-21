@@ -1,13 +1,13 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿ using System;
 using System.Data.Entity;
+using System.ComponentModel.DataAnnotations.Schema;
 using RowLevelSecurity.Context;
 
 namespace RowLevelSecurity.Example
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        /*private static void Main(string[] args)
         {
             using (var context = new ExampleContext())
             {
@@ -20,10 +20,11 @@ namespace RowLevelSecurity.Example
                 context.SetUsername("Miki");
                 Console.WriteLine();
                 Console.WriteLine("Miki blogs: ");
-                foreach (var contextBlog in context.Blogs) Console.WriteLine(contextBlog.Name);
+                foreach (var contextBlog in context.Blogs)
+                    Console.WriteLine(contextBlog.Name);
                 Console.ReadLine();
             }
-        }
+        }*/
     }
 
     [Table("BlogSecuredContext")]
