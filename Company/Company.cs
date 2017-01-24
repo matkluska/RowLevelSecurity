@@ -52,6 +52,8 @@ namespace RowLevelSecurity.Company
                 Console.WriteLine("2. Accountant");
                 Console.WriteLine("3. Programist");
                 Console.WriteLine("4. Intern");
+                Console.WriteLine("5. Test User 1");
+                Console.WriteLine("6. Test User 2");
                 Console.WriteLine("0. Exit");
                 var res = Console.ReadLine();
                 switch (res)
@@ -64,6 +66,10 @@ namespace RowLevelSecurity.Company
                         return "Programist_login";
                     case "4":
                         return "Intern_login";
+                    case "5":
+                        return "Test_login1";
+                    case "6":
+                        return "Test_login2";
                     case "0":
                         Environment.Exit(1);
                         ;
