@@ -4,11 +4,12 @@ using RowLevelSecurity.Aspect;
 
 namespace RowLevelSecurity.Company
 {
-
     internal class Company
     {
-        public static void Main(string[] args) {
-            using (var context = new CompanyContext()) {
+        public static void Main(string[] args)
+        {
+            using (var context = new CompanyContext())
+            {
                 Database.SetInitializer(new InitializeData());
 
                 Console.WriteLine("Zaloguj się do systemu: ");
@@ -17,12 +18,14 @@ namespace RowLevelSecurity.Company
                 Console.WriteLine("0. Exit");
 
                 var res = Console.ReadLine();
-                switch (res) {
+                switch (res)
+                {
                     case "1":
                         while (true)
                             PrintEmployeeEarnings(context);
                     case "2":
-                        while (true) {
+                        while (true)
+                        {
                             var username = PrintMenu(context);
                             PrintEmployeeEarnings(username, context);
                         }
@@ -33,18 +36,22 @@ namespace RowLevelSecurity.Company
             }
         }
 
-        public static void PrintEmployeeEarnings(CompanyContext context) {
+        public static void PrintEmployeeEarnings(CompanyContext context)
+        {
             context.Authorize(PrintMenu(context));
 
             PrintData(context);
         }
 
         [Authorize]
-        public static void PrintEmployeeEarnings(string userName, CompanyContext context) {
+        public static void PrintEmployeeEarnings(string userName, CompanyContext context)
+        {
             PrintData(context);
         }
+
         public static string PrintMenu(CompanyContext c)
         {
+            UserFactory uf = new UserFactory();
             while (true)
             {
                 Console.WriteLine("Zaloguj się do systemu: ");
@@ -54,36 +61,22 @@ namespace RowLevelSecurity.Company
                 Console.WriteLine("4. Intern");
                 Console.WriteLine("5. Test User 1");
                 Console.WriteLine("6. Test User 2");
-                Console.WriteLine("0. Exit");
                 var res = Console.ReadLine();
-                switch (res)
+                var user = uf.getUser(res);
+                if (user == null)
                 {
-                    case "1":
-                        return "Boss_login";
-                    case "2":
-                        return "Accountant_login";
-                    case "3":
-                        return "Programist_login";
-                    case "4":
-                        return "Intern_login";
-                    case "5":
-                        return "Test_login1";
-                    case "6":
-                        return "Test_login2";
-                    case "0":
-                        Environment.Exit(1);
-                        ;
-                        break;
-                    default:
-                        Console.Clear();
-                        Console.WriteLine("Niepoprawny wybór");
-                        continue;
+                    Console.Clear();
+                    Console.WriteLine("Niepoprawny wybór");
+                    continue;
                 }
+                return user;
             }
         }
 
-        private static void PrintData(CompanyContext context) {
-            foreach (var contextEmp in context.Employees) {
+        private static void PrintData(CompanyContext context)
+        {
+            foreach (var contextEmp in context.Employees)
+            {
                 //printing employees table
                 Console.WriteLine(
                     "{0,-4} {1,-10} {2,-15} {3,-10}",
