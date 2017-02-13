@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
-using RowLevelSecurity.Aspect;
+using RowLevelSecurity.Company.Auth;
 
 namespace RowLevelSecurity.Company
 {
@@ -10,43 +10,36 @@ namespace RowLevelSecurity.Company
         {
             using (var context = new CompanyContext())
             {
-                Database.SetInitializer(new InitializeData());
-
-                Console.WriteLine("Zaloguj się do systemu: ");
-                Console.WriteLine("1. wersja 1");
-                Console.WriteLine("2. wersja 2");
-                Console.WriteLine("0. Exit");
-
-                var res = Console.ReadLine();
-                switch (res)
+                while (true)
                 {
-                    case "1":
-                        while (true)
-                            PrintEmployeeEarnings(context);
-                    case "2":
-                        while (true)
-                        {
-                            var username = PrintMenu(context);
-                            PrintEmployeeEarnings(username, context);
-                        }
-                    case "0":
-                        Environment.Exit(1);
-                        break;
+                    Database.SetInitializer(new InitializeData());
+
+                    Console.Clear();
+                    Console.WriteLine("Zaloguj się do systemu: ");
+                    Console.WriteLine("1. Normalna autentykacja");
+                    Console.WriteLine("2. Autentykacja aspektowa");
+
+                    var res = Console.ReadLine();
+                    Authentication auth;
+
+                    switch (res)
+                    {
+                        case "1":
+                            auth = new NormalAuthentication();
+                            break;
+                        case "2":
+                            auth = new AspectAuthentication();
+                            break;
+                        default:
+                            Console.WriteLine("Niepoprawny wybór");
+                            continue;
+                    }
+
+                    var user = PrintMenu(context);
+                    auth.authenticate(user, context);
+                    PrintData(context);
                 }
             }
-        }
-
-        public static void PrintEmployeeEarnings(CompanyContext context)
-        {
-            context.Authorize(PrintMenu(context));
-
-            PrintData(context);
-        }
-
-        [Authorize]
-        public static void PrintEmployeeEarnings(string userName, CompanyContext context)
-        {
-            PrintData(context);
         }
 
         public static string PrintMenu(CompanyContext c)
@@ -114,6 +107,7 @@ namespace RowLevelSecurity.Company
                         e.EarningId);
                 Console.WriteLine();
             }
+            Console.ReadLine();
         }
     }
 }
